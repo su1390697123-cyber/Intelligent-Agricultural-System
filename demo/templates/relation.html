@@ -7,101 +7,123 @@
 {#    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>#}
 </head>
 <title>关系</title>
-<div class="container">
-    <div class="row">
-    <!--head start-->
-    <div class="col-md-12">
-        <h3 class="page-header"><i class="fa fa-link" aria-hidden="true"></i> 关系查询 </h3>
-            <ol class="breadcrumb">
-                <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                <li><i class="fa fa-link" aria-hidden="true"></i>关系查询</li>
-            </ol>
-    </div>
-    
-    <div class = "col-md-12">
-    	<div class = "panel panel-default">
-			<header class="panel-heading">
-            查询条件：
-       		</header>
-       		<div class = "panel-body">
-
-			    <form  id ="searchRelationForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%" method="get">
-			    	<div id = "entity1" class="form-group" style="padding: 2%">
-			        	<input type="text" id = "entity1_text" name = "entity1_text" class ="form-control" placeholder="实体１" aria-describedby="basic-addon1">
-			 		</div>
-			 		<!--dropdown combobox start-->
-			        <div class="btn-group" style="padding: 2%" > <a class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown" id="btnCountry">Select a Relation <span class="caret"></span></a>
-			            <ul class="dropdown-menu">
-			                <li><a href="#">Instance of</a></li>
-			                <li><a href="#">Country</a></li>
-			                <li><a href="#">Taxon rank</a></li>
-			                <li><a href="#">Subclass of</a></li>
-			                <li><a href="#">Has part</a></li>
-			                <li><a href="#">Parent Taxon</a></li>
-			                <li><a href="#">Sex or gender</a></li>
-			                <li><a href="#">Part of</a></li>
-			                <li><a href="#">Different from</a></li>
-			                <li><a href="#">Found in taxon</a></li>
-			                <li class="divider"></li>
-			                <li><a href="#"><span class="glyphicon glyphicon-star"></span>Other</a></li>
-			            </ul>
-			        </div>
-			        <!--dropdown combobox end-->
-			        <div id = "relation_name" class = "form-group hide" style="padding: 2%">
-			        	 <input type="text" id = "relation_name_input" name = "relation_name_text" class ="form-control" placeholder="输入关系名称" aria-describedby="basic-addon1">
-			        </div>
-			        <div id = "entity2" class = "form-group" style="padding: 2%">
-			        	 <input type="text" id = "entity2_text" name = "entity2_text" class ="form-control" placeholder="实体２" aria-describedby="basic-addon1">
-			        </div>
-			        <div class="btn-group" style="padding: 2%">
-			            <button type="button" id="btnSearch" class="btn btn-primary" onclick = "document.getElementById('searchRelationForm').submit();">Search</button>
-			        </div>
-				</form>
-			</div>
+<div class="relation-page-container">
+	<!-- 页面标题 -->
+	<div class="relation-title-section">
+		<div class="relation-icon-box-modern">
+			<i class="fa fa-link"></i>
+		</div>
+		<div class="relation-title-text-content">
+			<h2 class="relation-main-title">关系查询</h2>
+			<p class="relation-subtitle">查询实体间的关系</p>
 		</div>
 	</div>
-	{% if ctx %}
-	<div class = "col-md-12">
-		<div class = "panel panel-default">
-			<header class = "panel-heading">
-				查询结果：
-			</header>
-			<div class = "panel-body">
-				<div style="padding: 2%">
-					<h2>暂未找到相应的匹配</h2>
+
+	<!-- 面包屑 -->
+	<ol class="relation-breadcrumb-modern">
+		<li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+		<li class="relation-breadcrumb-divider">/</li>
+		<li class="active">关系查询</li>
+	</ol>
+
+	<!-- 查询条件区域 -->
+	<div class="card relation-search-card-modern">
+		<div class="relation-card-header-modern relation-header-primary">
+			<div class="relation-header-icon">
+				<i class="fa fa-search"></i>
+			</div>
+			<span class="relation-header-title">查询条件</span>
+		</div>
+		<div class="relation-card-body-modern">
+			<form id="searchRelationForm" class="relation-form-inline" method="get">
+				<div class="relation-form-group">
+					<input type="text" id="entity1_text" name="entity1_text" class="relation-form-control-modern" placeholder="实体 1" aria-describedby="basic-addon1">
 				</div>
+
+				<!--dropdown combobox start-->
+				<div class="relation-dropdown-group">
+					<button type="button" class="relation-btn-dropdown" id="btnCountry">
+						<span class="relation-dropdown-text">Select a Relation</span>
+						<span class="relation-caret"></span>
+					</button>
+					<ul class="relation-dropdown-menu">
+						<li><a href="#">Instance of</a></li>
+						<li><a href="#">Country</a></li>
+						<li><a href="#">Taxon rank</a></li>
+						<li><a href="#">Subclass of</a></li>
+						<li><a href="#">Has part</a></li>
+						<li><a href="#">Parent Taxon</a></li>
+						<li><a href="#">Sex or gender</a></li>
+						<li><a href="#">Part of</a></li>
+						<li><a href="#">Different from</a></li>
+						<li><a href="#">Found in taxon</a></li>
+						<li class="relation-divider"></li>
+						<li><a href="#"><i class="glyphicon glyphicon-star"></i> Other</a></li>
+					</ul>
+				</div>
+				<!--dropdown combobox end-->
+
+				<div class="relation-form-group relation-hide" id="relation_name">
+					<input type="text" id="relation_name_input" name="relation_name_text" class="relation-form-control-modern" placeholder="输入关系名称" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="relation-form-group">
+					<input type="text" id="entity2_text" name="entity2_text" class="relation-form-control-modern" placeholder="实体 2" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="relation-button-group">
+					<button type="button" id="btnSearch" class="relation-btn-submit" onclick="document.getElementById('searchRelationForm').submit();">
+						<i class="fa fa-search"></i>
+						<span>搜索</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	{% if ctx %}
+	<!-- 无结果提示 -->
+	<div class="card relation-info-card-modern">
+		<div class="relation-card-body-result-modern">
+			<div class="relation-no-result-box">
+				<div class="relation-no-result-icon">
+					<i class="fa fa-question-circle"></i>
+				</div>
+				<h3 class="relation-no-result-text">暂未找到相应的匹配</h3>
 			</div>
 		</div>
 	</div>
 	{% endif %}
 
-    {% if searchResult %}
-
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div class = "col-md-12">
-        <div class="panel panel-default ">
-	        <header class="panel-heading">
-	            关系图 :
-	        </header>
-            <div class = "panel-body ">
-                <div id="graph" style="width: 100%;height:600px;"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Footable -->
-    <div class = "col-md-12">
-	    <div class="panel panel-default">
-	    	<header class="panel-heading">
-	       	 关系列表 :
-	   		</header>
-	        <div class = "panel-body">
-	            <table class = "table" data-paging =  "true" data-sorting="true"></table>
-	        </div>
-	    </div>
+	{% if searchResult %}
+	<!-- 关系图 -->
+	<div class="card relation-graph-card-modern">
+		<div class="relation-card-header-modern relation-header-success">
+			<div class="relation-header-icon">
+				<i class="fa fa-sitemap"></i>
+			</div>
+			<span class="relation-header-title">关系图</span>
+		</div>
+		<div class="relation-card-body-graph-modern">
+			<div id="graph" class="relation-graph-container"></div>
+		</div>
 	</div>
-    {% endif %}
 
+	<!-- 关系列表 -->
+	<div class="card relation-table-card-modern">
+		<div class="relation-card-header-modern relation-header-info">
+			<div class="relation-header-icon">
+				<i class="fa fa-list"></i>
+			</div>
+			<span class="relation-header-title">关系列表</span>
+		</div>
+		<div class="relation-card-body-table-modern">
+			<table class="relation-table-modern" data-paging="true" data-sorting="true"></table>
+		</div>
+	</div>
+	{% endif %}
 </div>
+
 <script src="/static/js/jquery-1.8.3.min.js"></script>
 {% if searchResult %}
 <script type="text/javascript">
@@ -116,7 +138,7 @@
         tableData.push(relationData) ;
     }
     jQuery(function(){
-        $('.table').footable({
+        $('.relation-table-modern').footable({
         "columns": [{"name":"entity1",title:"Entity1"} ,
                   {"name":"relation",title:"Relation"},
                   {"name":"entity2",title:"Entity2"}],
@@ -132,7 +154,7 @@
     var maxDisPlayNode = 15 ;
     var id = 0 ;
     for( var i = 0 ;id < maxDisPlayNode&& i<searchResult.length ; i++ ){
-        //获取node1
+        //获取 node1
         node1 = {} ;
         node1['name'] = searchResult[i]['n1']['title'] ;
         node1['draggable'] = true ;
@@ -159,7 +181,7 @@
         	data.push(node1) ;
         }
 
-        //获取node2
+        //获取 node2
         node2 = {} ;
         node2['name'] = searchResult[i]['n2']['title'] ;
         node2['draggable'] = true ;
@@ -183,7 +205,7 @@
         	id++ ;
         	data.push(node2) ;
         }
-        //获取relation
+        //获取 relation
         relation = {}
         relation['source'] = node1['id'];
         relation['target'] = node2['id'] ;
@@ -205,7 +227,7 @@
     }
 
 
-     // 基于准备好的dom，初始化echarts实例
+     // 基于准备好的 dom，初始化 echarts 实例
     var myChart = echarts.init(document.getElementById('graph'));
     
     option = {
@@ -257,67 +279,90 @@
 	                        color: "#C71585",
 	                    }
 	                }
-	            }],
-	            label: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 12,
-	                    },
-	                }
-	            },
-	            force: {
-	                repulsion: 1000
-	            },
-	            edgeSymbolSize: [4, 50],
-	            edgeLabel: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 10
-	                    },
-	                    formatter: "{c}"
-	                }
-	            },
-	            data: data,
-	            links: links,
-	            lineStyle: {
-	                normal: {
-	                    opacity: 0.9,
-	                    width: 1.3,
-	                    curveness: 0,
-	                    color:"#262626",
-	                }
-	            }
-	        }
-	    ]
-	};
+            }],
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12,
+                    },
+                }
+            },
+            force: {
+                repulsion: 1000
+            },
+            edgeSymbolSize: [4, 50],
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 10
+                    },
+                    formatter: "{c}"
+                }
+            },
+            data: data,
+            links: links,
+            lineStyle: {
+                normal: {
+                    opacity: 0.9,
+                    width: 1.3,
+                    curveness: 0,
+                    color:"#262626",
+                }
+            }
+        }
+    ]
+};
 	// 使用刚指定的配置项和数据显示图表。
 	myChart.setOption(option);
 
 </script>
 {% endif %}
-<script>
+<script>	// 下拉框点击事件
+$(".relation-btn-dropdown").on("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-	$(".dropdown-menu li a").click(function(){
-	   var selText = $(this).text();
-	   $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
-	   if(selText.trim()!="Other"){
-	   	$("#relation_name_input").val(selText.trim()) ;
-	   }
-	   //combobox behavior
-	   if (selText.trim()==="Other") {
-	       $("#relation_name").removeClass("hide");
-	   }
-	   else{
-	   	   $("#relation_name").addClass("hide");
-	   }
-	  
-	});
+    // 关闭其他所有打开的下拉菜单
+    $(".relation-dropdown-menu").not($(this).next()).removeClass("show");
 
+    // 切换当前下拉菜单
+    var $dropdown = $(this).next(".relation-dropdown-menu");
+    $dropdown.toggleClass("show");
+});
 
-	// $("#btnSearch").click(function(){
-	// 	alert($('.btn-select').text()+", "+$('.btn-select2').text());
-	// });
+// 选项点击事件
+$(".relation-dropdown-menu li a").click(function(e){
+    e.preventDefault();
+    var selText = $(this).text();
+    var $btnGroup = $(this).parents('.relation-dropdown-group');
+    var $btn = $btnGroup.find('.relation-btn-dropdown');
+
+    $btn.find('.relation-dropdown-text').text(selText);
+    $btn.html(selText + ' <span class="relation-caret"></span>');
+
+    if(selText.trim() !== "Other"){
+        $("#relation_name_input").val(selText.trim());
+    }
+
+    //combobox behavior
+    if (selText.trim() === "Other") {
+        $("#relation_name").removeClass("relation-hide");
+    }
+    else{
+        $("#relation_name").addClass("relation-hide");
+    }
+
+    // 关闭下拉菜单
+    $(".relation-dropdown-menu").removeClass("show");
+});
+
+// 点击其他地方关闭下拉菜单
+$(document).on("click", function(e) {
+    if (!$(e.target).closest(".relation-dropdown-group").length) {
+        $(".relation-dropdown-menu").removeClass("show");
+    }
+});
 </script>
 {% endblock %}

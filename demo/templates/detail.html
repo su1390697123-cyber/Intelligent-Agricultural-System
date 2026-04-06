@@ -1,93 +1,133 @@
 {% extends "base.html" %} {% block mainbody %}
 
-<title>详细资料</title>
-
-<div class="container">
-    <div class="row">
-        <!--overview start-->
-
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="page-header"><i class="fa fa-indent"></i> 实体百科 </h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                        <li><i class="fa fa-search"></i><a href="../">命名实体识别</a></li>
-                        <li><i class="fa fa-indent"></i>实体百科</li>
-                    </ol>
-                </div>
-            </div>
-            {% autoescape off %}
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="panel panel-default">
-
-                        <!--代表将html标签文本转义成标签显示-->
-                        <div class="panel-body">
-                            <div class="page-header">
-                                <h1>{{ title }}</h1>
-                                {{ openTypeList }}
-                            </div>
-                            <hr class="my-4" />
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <a href="#" class="thumbnail">
-                                {{ image }}
-                             </a>
-                                </div>
-                                <div class="col-md-8">
-                                    <p class="card-text">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ detail }}</p>
-                                </div>
-                            </div>
-                            <br /> {{ baseInfoTable }}
-                        </div>
-
-
-
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="panel panel-default">
-                        <!--词云面板-->
-                        <div class="panel-body">
-                            <h4>相关概念：</h4>
-                            <!-- begin -->
-                            <div class="tagcloud">
-                                <!-- class="tagcloud" - 用途js.css -->
-                                {{ tagcloud }}
-                            </div>
-                            <!-- end -->
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <!--农业类型：-->
-                        <div class="panel-body">
-                            <h4>农业类型：</h4>
-                            <!-- begin -->
-                            {{ agri_type }}
-
-                            <!-- end -->
-                        </div>
-
-                    </div>
-                    <div class="panel panel-default">
-                        <!--农业类型：-->
-                        <div class="panel-body">
-                            <h4>实体类型：</h4>
-                            <!-- begin -->
-
-                            {{ entity_type }}
-                            <!-- end -->
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            {% endautoescape %}
+<link href="/static/css/detail_style.css" rel="stylesheet">
+<div class="detail-page-container">
+    <!-- 页面标题 -->
+    <div class="detail-title-section">
+        <div class="detail-icon-box-modern">
+            <i class="fa fa-indent"></i>
+        </div>
+        <div class="detail-title-text-content">
+            <h2 class="detail-main-title">实体百科</h2>
+            <p class="detail-subtitle">查看实体的详细信息和相关知识</p>
         </div>
     </div>
+
+    <!-- 面包屑导航 -->
+    <ol class="detail-breadcrumb-modern">
+        <li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="detail-breadcrumb-divider">/</li>
+        <li><a href="../"><i class="fa fa-search"></i> 命名实体识别</a></li>
+        <li class="detail-breadcrumb-divider">/</li>
+        <li class="active"><i class="fa fa-indent"></i> 实体百科</li>
+    </ol>
+
+    {% autoescape off %}
+    <div class="detail-content-wrapper">
+        <!-- 主内容区域 -->
+        <div class="detail-main-content">
+            <div class="detail-card-modern">
+                <div class="detail-card-body-modern">
+                    <!-- 实体标题 -->
+                    <div class="detail-entity-header-modern">
+                        <div class="detail-title-icon">
+                            <i class="fa fa-book"></i>
+                        </div>
+                        <div class="detail-entity-title-wrapper">
+                            <h1 class="detail-entity-title">{{ title }}</h1>
+                            {% if openTypeList %}
+                            <div class="detail-open-type-list-modern">
+                                {{ openTypeList }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="detail-divider-modern" />
+
+                    <!-- 图片和描述 -->
+                    {% if image or detail %}
+                    <div class="detail-entity-intro-modern">
+                        {% if image %}
+                        <div class="detail-entity-image-modern">
+                            {{ image }}
+                        </div>
+                        {% endif %}
+                        {% if detail %}
+                        <div class="detail-entity-description-modern">
+                            {{ detail }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- 基础信息表格 -->
+                    {% if baseInfoTable %}
+                    <div class="detail-base-info-wrapper-modern">
+                        {{ baseInfoTable }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 侧边栏 -->
+        <div class="detail-sidebar-modern">
+            <!-- 相关概念（词云） -->
+            <div class="detail-sidebar-panel-modern">
+                <div class="detail-panel-header-modern">
+                    <div class="detail-panel-icon">
+                        <i class="fa fa-cloud"></i>
+                    </div>
+                    <span class="detail-panel-title">相关概念</span>
+                </div>
+                <div class="detail-panel-body-modern">
+                    <div class="detail-tagcloud-wrapper-modern">
+                        <div class="tagcloud">
+                            {{ tagcloud }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 农业类型 -->
+            <div class="detail-sidebar-panel-modern">
+                <div class="detail-panel-header-modern">
+                    <div class="detail-panel-icon">
+                        <i class="fa fa-leaf"></i>
+                    </div>
+                    <span class="detail-panel-title">农业类型</span>
+                </div>
+                <div class="detail-panel-body-modern">
+                    {% if agri_type %}
+                    <div class="detail-type-links-modern">
+                        {{ agri_type }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 实体类型 -->
+            <div class="detail-sidebar-panel-modern">
+                <div class="detail-panel-header-modern">
+                    <div class="detail-panel-icon">
+                        <i class="fa fa-tags"></i>
+                    </div>
+                    <span class="detail-panel-title">实体类型</span>
+                </div>
+                <div class="detail-panel-body-modern">
+                    {% if entity_type %}
+                    <div class="detail-type-links-modern">
+                        {{ entity_type }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endautoescape %}
 </div>
+
 <script>
 </script>
 

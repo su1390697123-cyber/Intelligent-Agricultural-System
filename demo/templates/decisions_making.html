@@ -2,81 +2,128 @@
 
 <script src="/static/js/echarts.js"></script>
 {#<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>#}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
+<div class="decision-page-container">
+    <!-- 页面标题 -->
+    <div class="decision-title-section">
+        <div class="decision-icon-box-modern">
+            <i class="icon_images"></i>
+        </div>
+        <div class="decision-title-text-content">
+            <h2 class="decision-main-title">图片检索</h2>
+            <p class="decision-subtitle">基于图像识别的农业知识检索</p>
+        </div>
+    </div>
 
-            <!--overview start-->
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="page-header"><i class="icon_images"></i> 图片检索 </h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                        <li><i class="icon_images"></i>图片检索</li>
-                    </ol>
+    <!-- 面包屑导航 -->
+    <ol class="decision-breadcrumb-modern">
+        <li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="decision-breadcrumb-divider">/</li>
+        <li class="active"><i class="fa fa-camera"></i> 图片检索</li>
+    </ol>
+
+    <div class="decision-content-wrapper">
+        <!-- 左侧边栏 -->
+        <div class="decision-sidebar-modern">
+            <!-- 拍照上传 -->
+            <div class="decision-card-modern">
+                <div class="decision-card-header-modern">
+                    <div class="decision-header-icon">
+                        <i class="fa fa-camera"></i>
+                    </div>
+                    <span class="decision-header-title">拍照上传</span>
+                </div>
+                <div class="decision-card-body-modern">
+                    <form action="/decision" method="post">
+                        {% csrf_token %}
+
+                        <div class="decision-upload-wrapper-modern">
+                            <img id="img_upload_show" class="decision-image-preview-modern" src="" alt="点击选择图片上传">
+                            <input name="img_base64" id="img_base64" class="form-control" style="display: none">
+                            <label for="img_upload_file" class="decision-file-label-modern">
+                                <i class="fa fa-upload"></i>
+                                <span>选择图片</span>
+                            </label>
+                            <input id="img_upload_file" type="file" class="decision-file-input" onchange="handleSelected()" accept="image/*"/>
+                        </div>
+
+                        <button type="submit" class="decision-btn-submit-modern">
+                            <i class="fa fa-search"></i>
+                            <span>Match!</span>
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div class="row">
-            <div class="col-md-3">
-
-                <section class="panel panel-default">
-                    <header class="panel-heading">
-                        拍照上传 :
-                    </header>
-                    <div class="panel-body">
-                        <form action="/decision" method="post">
-                            {% csrf_token %}
-                        <a href="#" class="thumbnail">
-                        <img id="img_upload_show"  height="100%" width="100%">
-                        </a>
-                        <input name="img_base64" id="img_base64" class="form-control" style="display: none" > </input>
-                        <input id="img_upload_file" type="file" onchange="handleSelected()"/>
-                        <button type="submit" class="btn-primary btn-block"> Match! </button>
-                        </form>
+            <!-- 其它匹配结果 -->
+            <div class="decision-card-modern">
+                <div class="decision-card-header-info-modern">
+                    <div class="decision-header-icon">
+                        <i class="fa fa-th-large"></i>
                     </div>
-
-                </section>
-                <section class="panel panel-default">
-                    <header class="panel-heading">
-                        其它匹配结果 :
-                    </header>
-                    <div class="panel-body">
-                        {% autoescape off %}
+                    <span class="decision-header-title">其它匹配结果</span>
+                </div>
+                <div class="decision-card-body-modern">
+                    {% autoescape off %}
+                    {% if other_match %}
+                    <div class="decision-other-matches-modern">
                         {{ other_match }}
-                        {% endautoescape %}
-
-
-
                     </div>
-                </section>
-            </div>
-            <div class="col-md-9">
-                <section class="panel panel-default">
-                    <header class="panel-heading">
-                         最优匹配结果：
-                    </header>
-                    <div class="panel-body">
-                        {% autoescape off %}
-                        {{ best_match }}
-                        {% endautoescape %}
+                    {% else %}
+                    <div class="decision-empty-state-modern">
+                        <div class="decision-empty-icon">
+                            <i class="fa fa-image"></i>
+                        </div>
+                        <p>暂无其它匹配结果</p>
                     </div>
-                </section>
-
-                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                <div class="panel panel-default ">
-                    <header class="panel-heading">
-                        关系图 :
-                    </header>
-                    <div class = "panel-body ">
-                        <div id="graph" style="width: 90%;height:450px;"></div>
-                    </div>
+                    {% endif %}
+                    {% endautoescape %}
                 </div>
             </div>
-            </div>
-
         </div>
 
+        <!-- 主内容区域 -->
+        <div class="decision-main-content">
+            <!-- 最优匹配结果 -->
+            <div class="decision-result-card-modern">
+                <div class="decision-result-header-modern">
+                    <div class="decision-trophy-icon">
+                        <i class="fa fa-trophy"></i>
+                    </div>
+                    <span class="decision-result-title">最优匹配结果</span>
+                </div>
+                <div class="decision-result-body-modern">
+                    {% autoescape off %}
+                    {% if best_match %}
+                    <div class="decision-best-match-wrapper-modern">
+                        {{ best_match }}
+                    </div>
+                    {% else %}
+                    <div class="decision-empty-state-modern">
+                        <div class="decision-empty-icon">
+                            <i class="fa fa-question-circle"></i>
+                        </div>
+                        <p>请上传图片进行匹配</p>
+                    </div>
+                    {% endif %}
+                    {% endautoescape %}
+                </div>
+            </div>
+
+            <!-- 关系图 -->
+            <div class="decision-graph-card-modern">
+                <div class="decision-result-header-info-modern">
+                    <div class="decision-header-icon">
+                        <i class="fa fa-sitemap"></i>
+                    </div>
+                    <span class="decision-result-title">关系图</span>
+                </div>
+                <div class="decision-result-body-modern">
+                    <div class="decision-graph-wrapper-modern">
+                        <div id="graph" class="decision-graph-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -1,76 +1,90 @@
 {% extends "base.html" %} {% block mainbody %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
+<div class="index-page-container">
+    <!-- 页面标题 -->
+    <div class="index-title-section">
+        <div class="index-icon-box-modern">
+            <i class="fa fa-search"></i>
+        </div>
+        <div class="index-title-text-content">
+            <h2 class="index-main-title">实体识别</h2>
+            <p class="index-subtitle">命名实体识别功能</p>
+        </div>
+    </div>
 
-            <!--overview start-->
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="page-header"><i class="fa fa-search"></i> 实体识别 </h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                        <li><i class="fa fa-search"></i>实体识别</li>
-                    </ol>
+    <!-- 面包屑 -->
+    <ol class="index-breadcrumb-modern">
+        <li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="index-breadcrumb-divider">/</li>
+        <li class="active">实体识别</li>
+    </ol>
+
+    <!-- 输入区域 -->
+    <div class="card index-input-card-modern">
+        <div class="index-card-header-modern index-header-primary">
+            <div class="index-header-icon">
+                <i class="fa fa-edit"></i>
+            </div>
+            <span class="index-header-title">输入文本</span>
+        </div>
+        <div class="index-card-body-modern">
+            <form action="/ER-post" method="post">
+                <div class="index-form-group">
+                    {% csrf_token %}
+                    <textarea
+                            name="user_text"
+                            class="index-textarea-modern form-control"
+                            placeholder="请输入您需要识别的文本内容..."                            style="min-height:140px; resize:vertical;"
+                    ></textarea>
+                </div>
+                <div class="index-button-container-modern">
+                    <button type="submit" class="index-btn-submit-modern btn">
+                        <i class="fa fa-paper-plane"></i> 提交
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 结果展示区域 -->
+    <div class="index-results-group-modern">
+        <!-- 识别结果 -->
+        <div class="card index-result-card-modern">
+            <div class="index-card-header-modern index-header-success">
+                <div class="index-header-content">
+                    <div class="index-header-icon-small">
+                        <i class="fa fa-tags"></i>
+                    </div>
+                    <span class="index-header-title">识别结果</span>
                 </div>
             </div>
-
-            <section class="panel panel-default">
-                <header class="panel-heading">
-                    输入文本 :
-                </header>
-                <div class="panel-body">
-                    <form action="/ER-post" method="post">
-                        <div class="form-group">
-                            {% csrf_token %}
-                            <textarea type="text" name="user_text" class="form-control" placeholder="Enter text" style="height:140px"> </textarea>
-                        </div>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn-primary btn-lg btn-block"> 提交！ </button>
-                        </div>
-                        <div class="col-md-4"></div>
-                    </form>
+            <div class="index-card-body-result-modern">
+                {% autoescape off %}
+                <div class="index-result-box-modern index-entity-box-modern">
+                    {{ rlt }}
                 </div>
-            </section>
-            <!--collapse start-->
-            <div class="panel-group m-bot20" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    [查看识别结果]
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            {% autoescape off %}
-                            <h5>{{ rlt }}</h5>
-                            {% endautoescape %}
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                    [查看分词结果]
-                            </a>
-
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            {% autoescape off %}
-                            <h5> {{ seg_word }}</h5>
-                            {% endautoescape %}
-                        </div>
-                    </div>
-                </div>
-
+                {% endautoescape %}
             </div>
-            <!--collapse end-->
-
         </div>
 
+        <!-- 分词结果 -->
+        <div class="card index-result-card-modern">
+            <div class="index-card-header-modern index-header-info">
+                <div class="index-header-content">
+                    <div class="index-header-icon-small">
+                        <i class="fa fa-cut"></i>
+                    </div>
+                    <span class="index-header-title">分词结果</span>
+                </div>
+            </div>
+            <div class="index-card-body-result-modern">
+                {% autoescape off %}
+                <div class="index-result-box-modern index-word-box-modern">
+                    {{ seg_word }}
+                </div>
+                {% endautoescape %}
+            </div>
+        </div>
     </div>
 </div>
 

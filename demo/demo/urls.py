@@ -5,6 +5,7 @@ from . import _404_view, overview_view
 from . import relation_view
 from . import tagging
 from . import question_answering, decisions_making
+from . import ext_api_view
 
 urlpatterns = [
     url(r'^$', index_view.index),
@@ -18,6 +19,11 @@ urlpatterns = [
     url(r'^tagging',tagging.tagging),
     url(r'^search_relation',relation_view.search_relation),
     url(r'^qa', question_answering.question_answering),
-    url(r'^decision', decisions_making.decisions_making)
-    
+    url(r'^decision', decisions_making.decisions_making),
+    url(r'^api/llm_chat/$', ext_api_view.llm_chat_api, name='llm_chat_api'),
+    url(r'^api/image_recognize/$', ext_api_view.image_recognize_api, name='image_recognize_api'),
+    url(r'^ai_chat/$', ext_api_view.ai_chat_page, name='ai_chat_page'),
+    url(r'^image_recognize/$', ext_api_view.image_recognize_page, name='image_recognize_page'),
+    url(r'^api/pest_recognize/$', ext_api_view.pest_recognize_api, name='pest_recognize_api'),
+    url(r'^pest_recognize/$', ext_api_view.pest_recognize_page, name='pest_recognize_page'),
 ]

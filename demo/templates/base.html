@@ -48,6 +48,18 @@
     <link href="/static/css/footable.bootstrap.min.css" rel="stylesheet">
 
 
+    <link href="/static/css/base_style.css" rel="stylesheet">
+    <link href="/static/css/index_style.css" rel="stylesheet">
+    <link href="/static/css/entity_style.css" rel="stylesheet">
+    <link href="/static/css/relation_style.css" rel="stylesheet">
+    <link href="/static/css/overview_style.css" rel="stylesheet">
+    <link href="/static/css/detail_style.css" rel="stylesheet">
+    <link href="/static/css/question_answering_style.css" rel="stylesheet">
+    <link href="/static/css/decisions_making_style.css" rel="stylesheet">
+    <link href="/static/css/ai_chat_style.css" rel="stylesheet">
+    <link href="/static/css/image_recognize_style.css" rel="stylesheet">
+
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -59,87 +71,104 @@
 </head>
 
 <body>
-    <section id="container" class="">
-        <header class="header dark-bg">
-            <div class="toggle-nav">
-                <div class="icon-reorder tooltips" data-original-title="隐藏/显示侧栏" data-placement="bottom">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
+    <section class="base-container">
+    <!-- 左侧竖向导航栏 -->
+        <aside class="base-sidebar">
+            <!-- logo 区域 -->
+            <div class="base-logo">
+                <div class="logo-icon">
+                    <i class="fa fa-leaf"></i>
+                </div>
+                <div class="logo-text">
+                    <h3>农业知识图谱</h3>
+                    <span>demo</span>
                 </div>
             </div>
-
-            <!--logo start-->
-            <a href="/" class="logo"> 农业知识图谱 <span class="lite">demo</span></a>
-            <!--logo end-->
-
-
-            <div class="top-nav notification-row">
-                <!-- notificatoin dropdown start-->
-                <ul class="nav pull-right top-menu">
-                    <li>
-                        <a href='https://github.com/qq547276542/Agriculture_KnowledgeGraph'>
-                            <i class="fa fa-github" aria-hidden="true"> open Github</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </header>
-        <!--header end-->
-
-        <!--sidebar start-->
-        <aside>
-            <div id="sidebar" class="nav-collapse ">
-                <!-- sidebar menu start-->
-                <ul class="sidebar-menu">
-                    <li class="active">
-                        <a class="" href="/">
-                            <i class="icon_house_alt"></i>
-                            <span>实体识别</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="" href="/search_entity">
-                            <i class="icon_genius"></i>
-                            <span>实体查询</span>
-                        </a>
-                    </li>
-
-                     <li>
-                        <a class="" href="/search_relation">
-                            <i class=" social_googledrive"></i>
-                            <span>关系查询</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="" href="/overview?node=农业">
-                            <i class="icon_piechart"></i>
-                            <span>农业知识概览</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="" href="/qa">
-                            <i class="icon_chat_alt"></i>
-                            <span>农知问答</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="" href="/decision">
-                            <i class="icon_images"></i>
-                            <span>图片检索</span>
-                        </a>
-                    </li>
-
-                </ul>
-                <!-- sidebar menu end-->
-            </div>
+            <!-- 导航列表 -->
+            <ul class="base-nav-list">
+                <li>
+                    <a href="/" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-home"></i>
+                        </div>
+                        <span class="nav-text">实体识别</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/search_entity" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <span class="nav-text">模糊搜索</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="/search_relation" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-link"></i>
+                        </div>
+                        <span class="nav-text">关系查询</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                -->
+                <li>
+                    <a href="/overview?node=农业" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <span class="nav-text">农业知识概览</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="/qa" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <span class="nav-text">农知问答</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                -->
+                <li>
+                    <a href="/ai_chat" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <span class="nav-text">农知问答</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/image_recognize" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-camera"></i>
+                        </div>
+                        <span class="nav-text">图片识别</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="/decision" class="nav-item">
+                        <div class="nav-icon">
+                            <i class="fa fa-image"></i>
+                        </div>
+                        <span class="nav-text">图片检索</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                -->
+            </ul>
         </aside>
-        <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content">
-            <section class="wrapper">
+        <section class="base-main-content">
+            <section class="base-wrapper">
 
                 {% block mainbody %}
                 <p>original page</p>

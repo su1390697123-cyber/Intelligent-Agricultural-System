@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>YOLO 虫害识别</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+
+        /* 结果展示区初始隐藏 */
+        #resultBox {
+            display: none;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #eee;
+        }
+        #pestName {
+            color: #dc3545;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #resultImage {
+            margin-top: 15px;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🐛 YOLO 虫害识别接口</h2>
+        <p style="color: #666;">AI 在这生成了一段意义不明的话，不知道有什么用。</p>
+
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="testPestAPI()">🔍 一键识别</button>
+
+        <p id="apiStatus" style="margin-top: 15px; color: #888; font-weight: bold;"></p>
+
+        <div id="resultBox">
+            <p style="font-size: 1.2em;"><strong>🚨 检测结果：</strong> <span id="pestName"></span></p>
+            <img id="resultImage" alt="YOLO渲染图" />
+        </div>
+    </div>
+
+    <script>
+        async function testPestAPI() {
+            const fileInput = document.getElementById('imageInput');
+            const apiStatus = document.getElementById('apiStatus');
+            const resultBox = document.getElementById('resultBox');
+            const pestNameSpan = document.getElementById('pestName');
+            const resultImage = document.getElementById('resultImage');
+
+            if (fileInput.files.length === 0) {
+                alert("选张图再测啊！");
+                return;
+            }
+
+            // 重置状态
+            apiStatus.innerText = "⏳ 正在呼叫 YOLO 引擎...";
+            resultBox.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                // 调用我们写好的纯净接口
+                const response = await fetch('/api/pest_recognize/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    apiStatus.innerText = "✅ 识别成功！毫秒级响应！";
+
+                    // 🌟 核心极简逻辑：拿到名字直接塞，拿到 Base64 直接填！
+                    pestNameSpan.innerText = data.pest_name;
+                    resultImage.src = "data:image/jpeg;base64," + data.image_base64;
+
+                    // 动画般地展示结果框
+                    resultBox.style.display = 'block';
+                } else {
+                    apiStatus.innerText = "❌ 识别失败: " + data.msg;
+                }
+
+            } catch (error) {
+                apiStatus.innerText = "❌ 请求炸了，请检查终端报错: " + error;
+            }
+        }
+    </script>
+</body>
+</html>

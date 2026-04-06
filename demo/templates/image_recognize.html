@@ -1,0 +1,280 @@
+{% extends "base.html" %} {% block mainbody %}
+<div class="image-recog-page-container">
+    <!-- 页面标题 -->
+    <div class="image-recog-title-section">
+        <div class="image-recog-title-text-content">
+            <h2 class="image-recog-main-title">图片识别</h2>
+            <p class="image-recog-subtitle">基于深度学习的植物病虫害智能识别系统</p>
+        </div>
+    </div>
+
+    <!-- 面包屑导航 -->
+    <ol class="image-recog-breadcrumb-modern">
+        <li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="image-recog-breadcrumb-divider">/</li>
+        <li class="active"><i class="fa fa-camera"></i> 图片识别</li>
+    </ol>
+
+    <!-- 识别类型选择器 -->
+    <div class="image-recog-selector-wrapper">
+        <label class="image-recog-selector-label">
+            <i class="fa fa-th-list"></i>
+            <span>选择识别类型：</span>
+        </label>
+        <select id="recognitionType" class="image-recog-type-selector" onchange="switchRecognitionType()">
+            <option value="species">🌿 物种识别</option>
+            <option value="pest">🐛 病害识别</option>
+        </select>
+    </div>
+
+    <!-- 主卡片 -->
+    <div class="image-recog-card-modern">
+        <div class="image-recog-card-header-modern">
+            <div class="image-recog-header-icon">
+                <i class="fa fa-camera"></i>
+            </div>
+            <span class="image-recog-header-title" id="cardTitle">上传图片进行识别</span>
+        </div>
+        <div class="image-recog-card-body-modern">
+            <!-- 图片预览区域 -->
+            <div class="image-recog-upload-wrapper-modern">
+                <div id="previewBox" class="image-recog-preview-box-modern">
+                    <img id="previewImageDisplay" class="image-recog-preview-image" src="" alt="点击选择图片上传" style="display: none;">
+                    <div class="image-recog-preview-placeholder" id="previewPlaceholder">
+                        <div class="image-recog-placeholder-icon">
+                            <i class="fa fa-image"></i>
+                        </div>
+                        <p>图片预览</p>
+                    </div>
+                </div>
+
+                <label for="imageInput" class="image-recog-file-label-modern">
+                    <i class="fa fa-upload"></i>
+                    <span>选择图片</span>
+                </label>
+                <input type="file" id="imageInput" class="image-recog-file-input" accept="image/*" onchange="previewImage()">
+            </div>
+
+            <!-- 识别按钮 -->
+            <div class="image-recog-button-wrapper">
+                <button id="uploadBtn" class="image-recog-btn-modern" onclick="uploadImage()">
+                    <i class="fa fa-search"></i>
+                    <span id="btnText">开始识别</span>
+                </button>
+            </div>
+
+            <!-- 识别结果区域 -->
+            <div class="image-recog-result-wrapper-modern">
+                <div class="image-recog-result-header">
+                    <div class="image-recog-result-icon">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <span class="image-recog-result-title">识别结果：</span>
+                </div>
+                <div id="imageResult" class="image-recog-result-content-modern">
+                    <span class="image-recog-placeholder-text">请上传图片并点击识别按钮...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.image-recog-selector-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.image-recog-selector-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.image-recog-selector-label i {
+    font-size: 18px;
+    color: #28a745;
+}
+
+.image-recog-type-selector {
+    flex: 1;
+    max-width: 300px;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.image-recog-type-selector:hover {
+    border-color: #28a745;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.image-recog-type-selector:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+.image-recog-preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.image-recog-preview-box-modern {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.image-recog-preview-placeholder {
+    text-align: center;
+    color: #6c757d;
+}
+
+.image-recog-preview-placeholder-icon {
+    font-size: 48px;
+    color: #adb5bd;
+    margin-bottom: 15px;
+}
+
+.image-recog-preview-placeholder p {
+    font-size: 16px;
+    margin: 0;
+}
+</style>
+
+<script>
+let currentType = 'species';
+
+function switchRecognitionType() {
+    const selector = document.getElementById('recognitionType');
+    currentType = selector.value;
+
+    const cardTitle = document.getElementById('cardTitle');
+    const btnText = document.getElementById('btnText');
+    const resultElement = document.getElementById('imageResult');
+
+    if (currentType === 'species') {
+        cardTitle.textContent = '上传图片进行物种识别';
+        btnText.textContent = '开始识别';
+        resultElement.innerHTML = '<span class="image-recog-placeholder-text">请上传图片并点击识别按钮...</span>';
+    } else {
+        cardTitle.textContent = '上传图片进行病害识别';
+        btnText.textContent = '开始识别';
+        resultElement.innerHTML = '<span class="image-recog-placeholder-text">请上传图片并点击识别按钮...</span>';
+    }
+}
+
+function previewImage() {
+    const fileInput = document.getElementById('imageInput');
+    const previewImageDisplay = document.getElementById('previewImageDisplay');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+
+    if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            previewImageDisplay.src = e.target.result;
+            previewImageDisplay.style.display = 'block';
+            previewPlaceholder.style.display = 'none';
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
+async function uploadImage() {
+    const fileInput = document.getElementById('imageInput');
+    const resultElement = document.getElementById('imageResult');
+    const btnElement = document.getElementById('uploadBtn');
+
+    if (fileInput.files.length === 0) {
+        alert("请先选择一张图片！");
+        return;
+    }
+
+    // 根据类型选择不同的 API 端点
+    const apiUrl = currentType === 'species' ? '/api/image_recognize/' : '/api/pest_recognize/';
+
+    // 更新 UI 状态
+    if (currentType === 'species') {
+        resultElement.innerHTML = "正在上传并调用百度接口识别，请稍候...";
+    } else {
+        resultElement.innerHTML = "⏳ 正在呼叫 YOLO 引擎...";
+    }
+    btnElement.disabled = true;
+
+    const formData = new FormData();
+    formData.append('image', fileInput.files[0]);
+
+    try {
+        const res = await fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+
+        if (currentType === 'species') {
+            // 物种识别结果处理
+            if (data.status === 'success') {
+                const info = data.data;
+                const entityName = info.crop_type;
+                const kgUrl = `/search_entity?user_text=${encodeURIComponent(entityName)}`;
+
+                resultElement.innerHTML = `
+                    <p><strong>识别出的植物：</strong> ${entityName}</p>
+                    <p><strong>置信度：</strong> ${(info.confidence * 100).toFixed(2)}%</p>
+
+                    <hr style="margin-top: 20px;">
+                    <h4 style="color: #333;">📊 实体关系网：</h4>
+                    <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                        <iframe src="${kgUrl}" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                `;
+            } else {
+                resultElement.innerHTML = "<span style='color:red;'>识别错误：" + data.msg + "</span>";
+            }
+        } else {
+            // 病害识别结果处理
+            if (data.status === 'success') {
+                resultElement.innerHTML = `
+                    <p style="font-size: 1.2em;"><strong>🚨 检测结果：</strong> <span style="color: #dc3545; font-weight: bold; font-size: 1.5em;">${data.pest_name}</span></p>
+                    <img src="data:image/jpeg;base64,${data.image_base64}" alt="YOLO 渲染图" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-top: 15px;" />
+                `;
+            } else {
+                resultElement.innerHTML = "<span style='color:red;'>识别错误：" + data.msg + "</span>";
+            }
+        }
+    } catch (error) {
+        resultElement.innerHTML = "<span style='color:red;'>网络异常：" + error + "</span>";
+    } finally {
+        btnElement.disabled = false;
+    }
+}
+</script>
+{% endblock %}

@@ -1,5 +1,7 @@
 # The following contains only Python package dependencies
 
+Pillow==10.2.0
+ultralytics==8.1.0
 Cython>=0.28.5
 Django>=1.11.7
 thulac>=0.1.2

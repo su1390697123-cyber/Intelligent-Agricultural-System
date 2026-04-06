@@ -1,82 +1,138 @@
 {% extends "base.html" %} {% block mainbody %}
 
-<title>详细资料</title>
-
-<div class="container">
-    <div class="row">
-        <!--overview start-->
-
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="page-header"><i class="fa fa-sitemap" aria-hidden="true"></i> 农业知识概览 </h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                        <li><i class="fa fa-sitemap" aria-hidden="true"></i>农业知识概览</li>
-                    </ol>
-                </div>
-            </div>
-            {% autoescape off %}
-            <div class="row">
-                <!-- 树形图导航 -->
-                <div class="col-md-9">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h1>{{ node }}</h1>
-                            <hr/> {{ leaf }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 实体列表 -->
-                <div class="col-md-3">
-                    <!-- 模态框 -->
-
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h4>分类导航：</h4>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">显示</button>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h4>上级分类：</h4>
-
-                            {{ father }}
-
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h4>下级分类：</h4>
-                            {{ branch }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endautoescape %}
+<div class="overview-page-container">
+    <!-- 页面标题 -->
+    <div class="overview-title-section">
+        <div class="overview-icon-box-modern">
+            <i class="fa fa-sitemap"></i>
+        </div>
+        <div class="overview-title-text-content">
+            <h2 class="overview-main-title">农业知识概览</h2>
+            <p class="overview-subtitle">探索农业知识图谱的分类体系</p>
         </div>
     </div>
-</div>
-{% autoescape off %}
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"> 农业分类树 </h4>
-            </div>
-            <div class="modal-body">
-                <div class="tree well">
 
+    <!-- 面包屑导航 -->
+    <ol class="overview-breadcrumb-modern">
+        <li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="overview-breadcrumb-divider">/</li>
+        <li class="active">农业知识概览</li>
+    </ol>
+
+    {% autoescape off %}
+    <div class="overview-content-wrapper">
+        <!-- 主内容区域 - 节点名称显示 -->
+        <div class="overview-main-content">
+            <div class="overview-node-title-card">
+                <div class="overview-node-icon">
+                    <i class="fa fa-leaf"></i>
+                </div>
+                <div class="overview-node-title">
+                    <h1>{{ node }}</h1>
+                </div>
+            </div>
+            
+            <div class="overview-search-card" style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <form method="GET" action="/overview" style="display: flex; align-items: center; margin: 0;">
+                    <input type="hidden" name="node" value="{{ raw_node }}">
+
+                    <div style="position: relative; flex-grow: 1;">
+                        <i class="fa fa-search" style="position: absolute; left: 15px; top: 10px; color: #999;"></i>
+                        <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="在当前分类下搜索词条 (例如：蜘蛛)..." style="padding-left: 35px; border-radius: 20px; box-shadow: none; border-color: #e0e0e0;">
+                    </div>
+
+                    <button type="submit" class="btn btn-success" style="margin-left: 15px; border-radius: 20px; padding: 6px 25px; background-color: #2e8b57; border-color: #2e8b57;">
+                        搜索
+                    </button>
+
+                    {% if search_query %}
+                    <a href="/overview?node={{ raw_node }}" class="btn btn-default" style="margin-left: 10px; border-radius: 20px; padding: 6px 20px;">
+                        清除
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div class="overview-info-card-modern">
+                <div class="overview-card-header-modern">
+                    <div class="overview-header-icon-small">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <span class="overview-header-title">分类详情</span>
+                </div>
+                <div class="overview-card-body-modern">
+                    {{ leaf }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 侧边栏 - 导航功能 -->
+        <div class="overview-sidebar-modern">
+            <!-- 分类导航按钮 -->
+            <div class="overview-info-card-modern">
+                <div class="overview-card-body-modern">
+                    <h4 class="overview-sidebar-title">分类导航：</h4>
+                    <button type="button" class="overview-btn-tree-modern" data-toggle="modal" data-target="#myModal">
+                        <i class="fa fa-tree"></i>
+                        <span>显示分类树</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 上级分类 -->
+            <div class="overview-info-card-modern">
+                <div class="overview-card-header-modern overview-header-up">
+                    <div class="overview-header-icon-small">
+                        <i class="fa fa-arrow-up"></i>
+                    </div>
+                    <span class="overview-header-title">上级分类</span>
+                </div>
+                <div class="overview-card-body-modern">
+                    {{ father }}
+                </div>
+            </div>
+
+            <!-- 下级分类 -->
+            <div class="overview-info-card-modern">
+                <div class="overview-card-header-modern overview-header-down">
+                    <div class="overview-header-icon-small">
+                        <i class="fa fa-arrow-down"></i>
+                    </div>
+                    <span class="overview-header-title">下级分类</span>
+                </div>
+                <div class="overview-card-body-modern">
+                    {{ branch }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endautoescape %}
+</div>
+
+<!-- 分类树模态框 -->
+{% autoescape off %}
+<div class="modal modal-overview fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content-modern">
+            <div class="modal-header-modern">
+                <button type="button" class="close-modern" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title-modern" id="myModalLabel">
+                    <i class="fa fa-sitemap"></i>
+                    <span>农业分类树</span>
+                </h4>
+            </div>
+            <div class="modal-body-modern">
+                <div class="overview-tree-wrapper-modern">
                     {{ level_tree }}
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            <div class="modal-footer-modern">
+                <button type="button" class="overview-btn-close-modern" data-dismiss="modal">
+                    <i class="fa fa-close"></i>
+                    <span>关闭</span>
+                </button>
             </div>
         </div>
     </div>
